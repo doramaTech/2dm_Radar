@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acervo 2dM · Prioridades, Ondas e Estratégia de Liberação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0b0f1a;
+            color: #e8edf5;
+            padding: 2rem 1.5rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* cabeçalho */
+        .header {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #9b7bff, #5ee0c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .header .badge {
+            background: #1e2a3a;
+            border: 1px solid #2e4258;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #a0b8d4;
+        }
+
+        .badge span {
+            color: #5ee0c0;
+            font-weight: 600;
+        }
+
+        /* barra de pesquisa e filtros */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: #111a28;
+            padding: 1rem 1.4rem;
+            border-radius: 18px;
+            border: 1px solid #1f3042;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-wrapper {
+            flex: 2;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5f7d9e;
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            background: #0b111c;
+            border: 1px solid #26384c;
+            border-radius: 40px;
+            color: #eef4fc;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #7d6aff;
+            box-shadow: 0 0 0 3px rgba(125, 106, 255, 0.2);
+        }
+
+        #searchInput::placeholder {
+            color: #5a7290;
+            font-style: italic;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8ea5c2;
+            margin-right: 0.2rem;
+        }
+
+        .filter-btn {
+            background: #16212f;
+            border: 1px solid #253a4f;
+            color: #b8cee6;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            background: #1e2f42;
+            border-color: #3d5a78;
+        }
+
+        .filter-btn.active {
+            background: #3b2c7a;
+            border-color: #7d6aff;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(125, 106, 255, 0.4);
+        }
+
+        .filter-btn.p1.active { background: #b33f3f; border-color: #ff7b7b; box-shadow: 0 0 12px rgba(255, 100, 100, 0.4); }
+        .filter-btn.p2.active { background: #b3752e; border-color: #ffb45e; box-shadow: 0 0 12px rgba(255, 180, 90, 0.4); }
+        .filter-btn.p3.active { background: #b3a02e; border-color: #f5e05e; box-shadow: 0 0 12px rgba(245, 224, 90, 0.4); }
+        .filter-btn.p4.active { background: #2e6b4a; border-color: #5ee0a0; box-shadow: 0 0 12px rgba(94, 224, 160, 0.4); }
+        .filter-btn.p5.active { background: #3d4b5c; border-color: #a0b8d4; box-shadow: 0 0 12px rgba(160, 184, 212, 0.3); }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #435e7a;
+            color: #9fb8d4;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: auto;
+            transition: all 0.15s;
+        }
+
+        .reset-btn:hover {
+            background: #1b2a3a;
+            color: #ffffff;
+        }
+
+        /* tabela */
+        .table-wrapper {
+            background: #0e1622;
+            border-radius: 20px;
+            border: 1px solid #1e3044;
+            overflow-x: auto;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            min-width: 1200px;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.8rem;
+            background: #0f1a2b;
+            color: #b7d0ea;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid #23364a;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.8rem 0.8rem;
+            border-bottom: 1px solid #1a2a3a;
+            vertical-align: top;
+            color: #ccdcef;
+        }
+
+        tr:hover td {
+            background: #132233;
+        }
+
+        .id-cell {
+            font-weight: 700;
+            color: #7d9fd9;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+            width: 42px;
+            text-align: center;
+        }
+
+        .item-name {
+            font-weight: 500;
+            color: #e3ecf8;
+            min-width: 240px;
+        }
+
+        .item-name small {
+            display: block;
+            font-weight: 400;
+            color: #7b94b0;
+            font-size: 0.72rem;
+            margin-top: 3px;
+        }
+
+        .prio {
+            display: inline-block;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .prio-p1 { background: #4a1e1e; color: #ffa3a3; border: 1px solid #a63d3d; }
+        .prio-p2 { background: #4a3a1a; color: #ffcf7a; border: 1px solid #b37d2e; }
+        .prio-p3 { background: #4a451a; color: #f5e47a; border: 1px solid #b3a02e; }
+        .prio-p4 { background: #1a3d2e; color: #7ae0b0; border: 1px solid #2e8b5a; }
+        .prio-p5 { background: #2a3644; color: #b8cce0; border: 1px solid #4e6278; }
+
+        .tipo-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            background: #1c2c40;
+            color: #98b8da;
+            border: 1px solid #2e4763;
+            white-space: nowrap;
+        }
+
+        .esforco {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .esforco-baixo { color: #6fcf97; }
+        .esforco-medio { color: #f2c94c; }
+        .esforco-alto { color: #eb5757; }
+
+        .onda-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            white-space: nowrap;
+            background: #1a2e40;
+            color: #7d9fd9;
+            border: 1px solid #2e4a6a;
+        }
+
+        .onda-1 { background: #1e3a4a; color: #5ee0c0; border-color: #2e8a7a; }
+        .onda-2 { background: #2a2e4a; color: #9b8aff; border-color: #5a4ab3; }
+        .onda-3 { background: #3a2e4a; color: #c98aff; border-color: #8a4ab3; }
+        .onda-4 { background: #3a2a2e; color: #ff9b8a; border-color: #b35a4a; }
+        .onda-5 { background: #2e3a3a; color: #8ac9c9; border-color: #4a8a8a; }
+
+        .obs {
+            font-size: 0.78rem;
+            color: #8fa8c4;
+            max-width: 260px;
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            font-size: 0.82rem;
+            color: #6f8aa8;
+            padding: 1rem 0.5rem;
+        }
+
+        .footer-note strong {
+            color: #a8c4e0;
+        }
+
+        .contador {
+            font-weight: 600;
+            color: #5ee0c0;
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 3rem;
+            color: #5f7d9e;
+            font-style: italic;
+        }
+
+        /* scroll custom */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b111c; }
+        ::-webkit-scrollbar-thumb { background: #2e4258; border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4a6a8a; }
+
+        @media (max-width: 800px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 1.6rem; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .filter-group { justify-content: flex-start; }
+            .reset-btn { margin-left: 0; align-self: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <div class="header">
+        <h1>📦 Acervo 2dM · Estratégia de Liberação</h1>
+        <div class="badge">itens <span id="totalItens">60</span> · ondas <span>5</span> · NFTs <span>14</span></div>
+    </div>
+
+    <!-- BARRA DE PESQUISA E FILTROS -->
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <i>🔍</i>
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome, hash, observação, tipo…">
+        </div>
+
+        <div class="filter-group">
+            <label>Prioridade</label>
+            <button class="filter-btn p1 active" data-prio="p1">P1 · Imediata</button>
+            <button class="filter-btn p2 active" data-prio="p2">P2 · Curto</button>
+            <button class="filter-btn p3 active" data-prio="p3">P3 · Médio</button>
+            <button class="filter-btn p4 active" data-prio="p4">P4 · Longo</button>
+            <button class="filter-btn p5 active" data-prio="p5">P5 · Backlog</button>
+        </div>
+
+        <div class="filter-group">
+            <label>Onda</label>
+            <button class="filter-btn active" data-onda="1">🌊 1</button>
+            <button class="filter-btn active" data-onda="2">🌊 2</button>
+            <button class="filter-btn active" data-onda="3">🌊 3</button>
+            <button class="filter-btn active" data-onda="4">🌊 4</button>
+            <button class="filter-btn active" data-onda="5">🌊 5</button>
+        </div>
+
+        <button class="reset-btn" id="resetFilters">⟲ Limpar filtros</button>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-wrapper">
+        <table id="tabelaItens">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item / Nome</th>
+                    <th>Prioridade</th>
+                    <th>Tipo</th>
+                    <th>Esforço</th>
+                    <th>Onda</th>
+                    <th>Observação / Dependência</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyItens">
+                <!-- JS preenche -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="footer-note">
+        <span>🔴 P1 = imediata · 🟠 P2 = curto prazo · 🟡 P3 = médio · 🟢 P4 = longo · ⚫ P5 = backlog</span>
+        <span>Exibindo <strong class="contador" id="contadorVisivel">60</strong> de <strong>60</strong> itens</span>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    // DADOS — unificação das duas tabelas (itens 1–60)
+    // ============================================================
+    const itens = [
+        // ---------- TABELA 1 (itens 1–21) ----------
+        { id: 1, nome: "Wiki Mirf (lançar)", prio: "p1", tipo: "Wiki", esforco: "baixo", onda: 1, obs: "Item listado como 'Lançar'; só publicar. Baixo esforço, sem dependência externa." },
+        { id: 2, nome: "Wiki MRCF (lançar)", prio: "p1", tipo: "Wiki", esforco: "baixo", onda: 1, obs: "Mesmo caso da Wiki Mirf; publicar em par com a anterior." },
+        { id: 3, nome: "Biblioteca Web3 2dM — 3 livros em IPFS (Chamado Público Hub SP, Livro 3 'Cair das Máscaras', Livro 4 'Paranormalidades')", prio: "p1", tipo: "IPFS", esforco: "baixo", onda: 1, obs: "Já registrado em IPFS (Pinata). Só falta divulgar/organizar índice público." },
+        { id: 4, nome: "Portfólio Visual — Certificados Blockchain 2025 (Jackson Tavares Veiga)", prio: "p1", tipo: "Portfólio", esforco: "baixo", onda: 1, obs: "Conteúdo fechado (hashes + Lattes). Falta conversão para PDF ou página web." },
+        { id: 5, nome: "Certificados individuais (pesquisador, sem nome coletivo 2dM) — HDMI/HMI P52, Figma Aeronaval, Minicurso MRCF, GBAD, Telemetria, Rel. Módulo 6, Fox3, Teias, Tese Mestrado, Manufatura, AAS, Entre Aldeias e Coronéis, Ateliê 2dM, Pitch MRCF Planar", prio: "p2", tipo: "NFT (lote)", esforco: "baixo", onda: 1, obs: "Texto e hash prontos; só gerar arte POP Ethereum e publicar em lote." },
+        { id: 6, nome: "Livro Dois de Muitos (Resumo Simplificado)", prio: "p2", tipo: "Livro", esforco: "baixo", onda: 2, obs: "Pronto em LaTeX, só revisar. Não depende de terceiros." },
+        { id: 7, nome: "Pedido da PO do MRCF", prio: "p2", tipo: "Submissão", esforco: "baixo", onda: 2, obs: "Fácil, mas requer formulário/contato externo (PO)." },
+        { id: 8, nome: "Pedido da PO do MIRF", prio: "p2", tipo: "Submissão", esforco: "baixo", onda: 2, obs: "Idem item 7." },
+        { id: 9, nome: "Lançar primeiro álbum de músicas 2dM", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 2, obs: "Conteúdo existe (Cris/Akã/Tav), mas exige curadoria e escolha de plataforma." },
+        { id: 10, nome: "Lançamentos — Biblioteca Web3 2dM (catálogo/manifesto JSON)", prio: "p2", tipo: "JSON", esforco: "baixo", onda: 1, obs: "JSON já estruturado; publicar como página-índice junto ao item 3." },
+        { id: 11, nome: "2DM JAM 01 — compilado de poemas", prio: "p3", tipo: "Coletânea", esforco: "medio", onda: 3, obs: "Múltiplos autores; precisa autorização e canal oficial." },
+        { id: 12, nome: "Culturas Regenerativas em AÇÃO (template MDPI Nhande Vahte/UNIFESP)", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Decidir se vale publicar; antes de tornar público." },
+        { id: 13, nome: "Livro 3 Dois de Muitos — O FIM ('Cair das MASCARAS', 167 pág.)", prio: "p3", tipo: "Livro", esforco: "medio", onda: 4, obs: "Pronto, aguardando revisão; depois publicar (já tem IPFS)." },
+        { id: 14, nome: "Artigo MDPI MRCF", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Pendente atender comentários + nova conversa (Vinícius)." },
+        { id: 15, nome: "Artigo MDPI MRCF DDA (template Vinícius)", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Pendente revisão + conversa. Pesquisa espacial QUALIS." },
+        { id: 16, nome: "Finalizar LaTeX da tese doc — defesa inicial", prio: "p4", tipo: "Tese", esforco: "alto", onda: 5, obs: "Depende de banca, instituição e tempo." },
+        { id: 17, nome: "Apresentação .ppt defesa ITA", prio: "p4", tipo: "Apresentação", esforco: "alto", onda: 5, obs: "Acoplado ao item 16." },
+        { id: 18, nome: "Resubmeter Springer", prio: "p4", tipo: "Submissão", esforco: "alto", onda: 5, obs: "Depende de processo editorial externo (revisores)." },
+        { id: 19, nome: "Projeto de PROPOSTA — Espaço limpo / Ecovila Sustentar (CandeoBee)", prio: "p4", tipo: "Projeto", esforco: "alto", onda: 5, obs: "Depende de solicitante e editais." },
+        { id: 20, nome: "Livro 4 2dM — 'Paranormal' (98 pág., em construção)", prio: "p5", tipo: "Livro", esforco: "alto", onda: 5, obs: "Ainda em escrita; só divulgar quando fechado." },
+        { id: 21, nome: "Consulta voluntária em regeneração/soberania (arquitetura do servidor)", prio: "p5", tipo: "Estrutural", esforco: "alto", onda: 5, obs: "Meta-projeto que organiza os outros; desenhar após itens 1–10 públicos." },
+
+        // ---------- TABELA 2 (itens 22–60) ----------
+        { id: 22, nome: "Certificado — Prova Funcional HDMI/HMI P52 – NAVCON (hash 4772…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Já tem hash; só arte POP + publicar." },
+        { id: 23, nome: "Certificado — Figma Site Aeronaval (hash 23fb…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Idem." },
+        { id: 24, nome: "Certificado — Sistemas GBAD em defesa de ponto (hash f4e4…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Idem." },
+        { id: 25, nome: "Certificado — Teias – Conectando Coletivos (hash 3736…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição adicional pronta." },
+        { id: 26, nome: "Certificado — Tese Mestrado MCRV (hash 6f6a…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 27, nome: "Certificado — Controle de Manufatura Distribuída (hash 55a0…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 28, nome: "Certificado — AAS Coalizão de Capacidades (hash a5f3…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 29, nome: "Certificado — Entre Aldeias e Coronéis (hash e503…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 30, nome: "Certificado — Pitch Ateliê 2dM (hash 8c6f…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 31, nome: "Certificado — Pitch MRCF Planar v0 (hash 96ef…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 32, nome: "Certificado — Minicurso Framework MRCF (hash 4e41…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 33, nome: "Certificado — Telemetria Foguete Modelismo (hash 58c5…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 34, nome: "Certificado — Relatório Módulo 6 – Simulação Defesa ASA (hash 9f2a…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 35, nome: "Certificado — Relatório Atividade 01 – Fox3 (hash 95ff…)", prio: "p1", tipo: "NFT", esforco: "baixo", onda: 1, obs: "Descrição pronta." },
+        { id: 36, nome: "Livro 03 – Autobiografia Akã (2dM)", prio: "p2", tipo: "Livro", esforco: "medio", onda: 2, obs: "Precisa autorização do Akã (coautor)." },
+        { id: 37, nome: "Livro 'Sombras' (Akã)", prio: "p2", tipo: "Livro", esforco: "medio", onda: 2, obs: "Coautoria — autorização." },
+        { id: 38, nome: "Livro 'Início Caminhar' (Akã)", prio: "p2", tipo: "Livro", esforco: "medio", onda: 2, obs: "Coautoria — autorização." },
+        { id: 39, nome: "Livro 'Devaneios com Sophia' (21/09)", prio: "p3", tipo: "Livro", esforco: "medio", onda: 4, obs: "Em construção/revisão." },
+        { id: 40, nome: "Livro Infantil Sophie (formalismo inicial)", prio: "p3", tipo: "Livro", esforco: "medio", onda: 4, obs: "Rascunho — não lançar ainda." },
+        { id: 41, nome: "Canções Cris (Eu acessei as luzes do teu olhar, Don't let me go, Triz, 02 Podcast, Pan Pan Terror, Cover Nanã, Tempo Só Agora, Seu Jeito de SER, Piano Coletâneas)", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 2, obs: "Coautoria Cris — autorização + plataforma (SoundCloud/Bandcamp/IPFS)." },
+        { id: 42, nome: "Canções Akã (Cansado no Meio da Mata, EU Aldeia, Águas Ecuou, Tupi Namba)", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 2, obs: "Coautoria Akã." },
+        { id: 43, nome: "Instrumental piano/violão (Cris & Tav)", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 2, obs: "Coautoria." },
+        { id: 44, nome: "Podcasts ECO (Sophia, Aldeia Rizomar, Aldeia B, Caminho Artista)", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 3, obs: "Verificar consentimento dos entrevistados." },
+        { id: 45, nome: "Podcast Início Caminhar (Akã)", prio: "p2", tipo: "Áudio", esforco: "medio", onda: 2, obs: "Coautoria." },
+        { id: 46, nome: "Podcast Minicurso UAS (Tavares)", prio: "p2", tipo: "Áudio", esforco: "baixo", onda: 1, obs: "Solo — pode ir rápido." },
+        { id: 47, nome: "Vivências documentadas (Pedreira, Taketina 01/02/03, Huni Santana, Ciranda, Sítio Bruna, Sítio Renovo, ECO Aldeia Encontros)", prio: "p3", tipo: "Vídeo/Doc", esforco: "alto", onda: 3, obs: "Múltiplos participantes → consentimento de imagem." },
+        { id: 48, nome: "Jogo Tabuleiro 2dM – Space Crianças (Akã)", prio: "p3", tipo: "Jogo", esforco: "medio", onda: 2, obs: "Coautoria." },
+        { id: 49, nome: "Artigo MAS-ML / UTM MAS-UML (29/07–28/08)", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Em concepção — concluir antes." },
+        { id: 50, nome: "Artigo Sustentabilidade (02/08)", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Concepção inicial." },
+        { id: 51, nome: "Artigo GBAds (Tavares)", prio: "p3", tipo: "Artigo", esforco: "medio", onda: 4, obs: "Concluir + revisar." },
+        { id: 52, nome: "LP Ateliê 2dM (Tavares)", prio: "p2", tipo: "Doc", esforco: "baixo", onda: 1, obs: "Solo, pronto — publicar." },
+        { id: 53, nome: "Wiki Lab (13/03)", prio: "p1", tipo: "Wiki", esforco: "baixo", onda: 1, obs: "Só publicar." },
+        { id: 54, nome: "5ª Conferência de Sustentabilidade — participação (12/03)", prio: "p3", tipo: "Registro", esforco: "baixo", onda: 3, obs: "Registrar como memória." },
+        { id: 55, nome: "Certificação de Revisor no ITA (16/09)", prio: "p2", tipo: "Certificado", esforco: "baixo", onda: 1, obs: "Já comprovado — incluir no portfólio." },
+        { id: 56, nome: "Banca ICs no ITA (15–16/09)", prio: "p2", tipo: "Certificado", esforco: "baixo", onda: 1, obs: "Incluir no portfólio." },
+        { id: 57, nome: "Proposta Espaço Limpo / Ecovila Sustentar (CandeoBee)", prio: "p4", tipo: "Projeto", esforco: "alto", onda: 5, obs: "Depende de edital e parceiro." },
+        { id: 58, nome: "Criação de fundo permanente (rede Cabruca + redes políticas)", prio: "p5", tipo: "Estrutural", esforco: "alto", onda: 5, obs: "Longo prazo, múltiplos atores." },
+        { id: 59, nome: "Chalé / Trailer em ecovila (histórico)", prio: "p5", tipo: "Memória", esforco: "baixo", onda: 5, obs: "NÃO relançar — registrar como aprendizado/estudo de caso." },
+        { id: 60, nome: "Arquitetura do servidor + treinamento da consultoria", prio: "p1", tipo: "Meta", esforco: "alto", onda: 5, obs: "Desenho estratégico; executar após vitrine pública (itens 1–10)." }
+    ];
+
+    // ============================================================
+    // RENDERIZAÇÃO
+    // ============================================================
+    const tbody = document.getElementById('tbodyItens');
+    const searchInput = document.getElementById('searchInput');
+    const contadorVisivel = document.getElementById('contadorVisivel');
+    const totalItens = document.getElementById('totalItens');
+
+    let prioAtivas = new Set(['p1', 'p2', 'p3', 'p4', 'p5']);
+    let ondasAtivas = new Set([1, 2, 3, 4, 5]);
+    let termoBusca = '';
+
+    totalItens.textContent = itens.length;
+
+    function prioLabel(p) {
+        const map = { p1: 'P1 · Imediata', p2: 'P2 · Curto', p3: 'P3 · Médio', p4: 'P4 · Longo', p5: 'P5 · Backlog' };
+        return map[p] || p;
+    }
+
+    function prioClass(p) {
+        return 'prio prio-' + p;
+    }
+
+    function ondaClass(n) {
+        return 'onda-badge onda-' + (n <= 5 ? n : 5);
+    }
+
+    function esforcoClass(e) {
+        if (e === 'baixo') return 'esforco esforco-baixo';
+        if (e === 'medio') return 'esforco esforco-medio';
+        return 'esforco esforco-alto';
+    }
+
+    function esforcoLabel(e) {
+        return e === 'baixo' ? 'Baixo' : e === 'medio' ? 'Médio' : 'Alto';
+    }
+
+    function render() {
+        const filtrados = itens.filter(item => {
+            if (!prioAtivas.has(item.prio)) return false;
+            if (!ondasAtivas.has(item.onda)) return false;
+            if (termoBusca.trim() !== '') {
+                const t = termoBusca.toLowerCase();
+                const hay = (item.nome + ' ' + item.obs + ' ' + item.tipo + ' ' + (item.id + '')).toLowerCase();
+                if (!hay.includes(t)) return false;
+            }
+            return true;
+        });
+
+        if (filtrados.length === 0) {
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="7">Nenhum item encontrado com os filtros atuais. Ajuste a pesquisa ou limpe os filtros.</td></tr>`;
+            contadorVisivel.textContent = '0';
+            return;
+        }
+
+        // ordenar por id
+        filtrados.sort((a, b) => a.id - b.id);
+
+        let html = '';
+        for (const item of filtrados) {
+            html += `<tr>
+                <td class="id-cell">${item.id}</td>
+                <td class="item-name">${escapeHtml(item.nome)}</td>
+                <td><span class="${prioClass(item.prio)}">${prioLabel(item.prio)}</span></td>
+                <td><span class="tipo-badge">${escapeHtml(item.tipo)}</span></td>
+                <td><span class="${esforcoClass(item.esforco)}">${esforcoLabel(item.esforco)}</span></td>
+                <td><span class="${ondaClass(item.onda)}">🌊 ${item.onda}</span></td>
+                <td class="obs">${escapeHtml(item.obs)}</td>
+            </tr>`;
+        }
+        tbody.innerHTML = html;
+        contadorVisivel.textContent = filtrados.length;
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            if (m === '"') return '&quot;';
+            if (m === "'") return '&#39;';
+            return m;
+        });
+    }
+
+    // ============================================================
+    // EVENTOS
+    // ============================================================
+    searchInput.addEventListener('input', function() {
+        termoBusca = this.value;
+        render();
+    });
+
+    document.querySelectorAll('.filter-btn[data-prio]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const p = this.dataset.prio;
+            if (prioAtivas.has(p)) {
+                prioAtivas.delete(p);
+                this.classList.remove('active');
+            } else {
+                prioAtivas.add(p);
+                this.classList.add('active');
+            }
+            render();
+        });
+    });
+
+    document.querySelectorAll('.filter-btn[data-onda]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const o = parseInt(this.dataset.onda, 10);
+            if (ondasAtivas.has(o)) {
+                ondasAtivas.delete(o);
+                this.classList.remove('active');
+            } else {
+                ondasAtivas.add(o);
+                this.classList.add('active');
+            }
+            render();
+        });
+    });
+
+    document.getElementById('resetFilters').addEventListener('click', function() {
+        prioAtivas = new Set(['p1', 'p2', 'p3', 'p4', 'p5']);
+        ondasAtivas = new Set([1, 2, 3, 4, 5]);
+        termoBusca = '';
+        searchInput.value = '';
+
+        document.querySelectorAll('.filter-btn[data-prio]').forEach(b => b.classList.add('active'));
+        document.querySelectorAll('.filter-btn[data-onda]').forEach(b => b.classList.add('active'));
+
+        render();
+    });
+
+    // inicial
+    render();
+</script>
+</body>
+</html>
